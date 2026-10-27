@@ -34,11 +34,11 @@ export function Logo({ light = false }: { light?: boolean }) {
   return (
     <span className="flex items-center gap-2.5">
       <span className={light ? "rounded-xl bg-white p-1" : ""}>
-        <LogoMark className="h-10 w-10" />
+        <LogoMark className="h-9 w-9" />
       </span>
-      <span className={`leading-[1.05] font-extrabold tracking-tight ${light ? "text-white" : "text-navy-900"}`}>
-        <span className="block text-[17px]">Disposable</span>
-        <span className="block text-[17px]">Wears</span>
+      <span className={`font-display leading-[0.95] font-extrabold tracking-[-0.03em] ${light ? "text-white" : "text-night"}`}>
+        <span className="block text-[16px]">Disposable</span>
+        <span className="block text-[16px]">Wears</span>
       </span>
     </span>
   );

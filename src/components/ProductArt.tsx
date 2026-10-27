@@ -144,12 +144,21 @@ export function ProductArt({
   variant,
   className = "",
   label,
+  bare = false,
 }: {
   art: string | null;
   variant?: string;
   className?: string;
   label: string;
+  bare?: boolean; // no background, for floating cut-out style
 }) {
+  if (bare) {
+    return (
+      <svg viewBox="0 0 200 200" className={className} role="img" aria-label={label}>
+        <Drawing art={art ?? ""} p={paletteFor(variant)} />
+      </svg>
+    );
+  }
   return (
     <svg viewBox="0 0 200 200" className={className} role="img" aria-label={label}>
       <defs>
@@ -169,14 +178,16 @@ export function ProductImage({
   product,
   variant,
   className = "",
+  bare = false,
 }: {
   product: { name: string; art: string | null; image_url: string | null };
   variant?: string;
   className?: string;
+  bare?: boolean;
 }) {
   if (product.image_url) {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={product.image_url} alt={product.name} className={`object-cover ${className}`} />;
+    return <img src={product.image_url} alt={product.name} className={`${bare ? "object-contain" : "object-cover"} ${className}`} />;
   }
-  return <ProductArt art={product.art} variant={variant} label={product.name} className={className} />;
+  return <ProductArt art={product.art} variant={variant} label={product.name} className={className} bare={bare} />;
 }

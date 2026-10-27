@@ -14,6 +14,14 @@
   --color-muted: #5b6475;
   --color-line: #e3e8f2;
   --color-whatsapp: #1fa855;
+
+  /* Clinical glass redesign */
+  --font-display: var(--font-bricolage), var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jbmono), ui-monospace, monospace;
+  --color-volt: #2a44ff;
+  --color-volt-soft: #e7ebff;
+  --color-ice: #f3f6fc;
+  --color-night: #070b1a;
 }
 
 html {
@@ -81,4 +89,68 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* ------------------------------------------------------------------ */
+/* Clinical glass                                                      */
+/* ------------------------------------------------------------------ */
+
+@utility glass {
+  @apply border border-white/70 bg-white/55 shadow-[0_20px_60px_-20px_rgba(20,30,90,0.25)] backdrop-blur-xl;
+}
+@utility glass-dark {
+  @apply border border-white/15 bg-white/[0.07] backdrop-blur-xl;
+}
+@utility tag {
+  @apply font-mono text-[11px] font-medium tracking-[0.14em] uppercase;
+}
+@utility btn-volt {
+  @apply btn rounded-full bg-volt px-6 text-white shadow-[0_10px_30px_-8px_rgba(42,68,255,0.7)] hover:bg-night;
+}
+@utility btn-ghost {
+  @apply btn rounded-full border border-night/15 bg-white/60 px-6 text-night backdrop-blur hover:border-night;
+}
+
+.bg-lab {
+  background-color: var(--color-ice);
+  background-image:
+    radial-gradient(rgba(7, 11, 26, 0.09) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Cut-out products float with a soft, coloured shadow */
+.float-item {
+  filter: drop-shadow(0 28px 22px rgba(20, 34, 120, 0.22)) drop-shadow(0 6px 6px rgba(20, 34, 120, 0.12));
+}
+
+@keyframes bob {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--r, 0deg)); }
+  50% { transform: translate3d(0, -14px, 0) rotate(calc(var(--r, 0deg) + 2deg)); }
+}
+.animate-bob { animation: bob 7s ease-in-out infinite; }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes words {
+  0%, 22% { transform: translateY(0); }
+  33%, 55% { transform: translateY(-25%); }
+  66%, 88% { transform: translateY(-50%); }
+  100% { transform: translateY(-75%); }
+}
+.animate-words { animation: words 7.5s cubic-bezier(0.7, 0, 0.2, 1) infinite; }
+.animate-marquee { animation: marquee 32s linear infinite; }
+
+/* Sections rise in as they scroll into view (supported browsers only) */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: fade-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-bob, .animate-marquee, .animate-words, .reveal { animation: none; }
 }
