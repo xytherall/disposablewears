@@ -183,7 +183,7 @@ export function CheckoutForm({ settings }: { settings: StoreSettings }) {
           <ul className="mt-5 max-h-72 space-y-3 overflow-y-auto border-t border-line pt-5">
             {items.map((i) => (
               <li key={i.variantId} className="flex items-center gap-3">
-                <span className="relative shrink-0 overflow-hidden rounded-xl border border-line">
+                <span className="bg-lab relative shrink-0 overflow-hidden rounded-xl border border-night/[0.06] p-1">
                   <CartLineImage item={i} className="block h-14 w-14" />
                   <span className="absolute top-0 right-0 rounded-bl-lg bg-navy-900 px-1.5 text-[11px] font-bold text-white">{i.quantity}</span>
                 </span>

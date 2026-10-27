@@ -49,8 +49,8 @@ export default function AboutPage() {
             ["mask", "Black"], ["spa", "Black"], ["shoe", "Blue"],
             ["apron", "White"], ["gloves", "Transparent"], ["scrubs", "Blue"],
           ].map(([art, v]) => (
-            <div key={art} className="overflow-hidden rounded-2xl border border-line">
-              <ProductArt art={art} variant={v} label="" className="block aspect-square w-full" />
+            <div key={art} className="bg-lab rounded-3xl border border-night/[0.06] p-3 transition hover:-translate-y-1">
+              <ProductArt art={art} variant={v} label="" bare className="float-item block aspect-square w-full" />
             </div>
           ))}
         </div>

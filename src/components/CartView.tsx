@@ -45,7 +45,7 @@ export function CartView({ settings }: { settings: StoreSettings }) {
       <ul className="min-w-0 divide-y divide-line rounded-3xl border border-line">
         {items.map((item) => (
           <li key={item.variantId} className="flex items-start gap-3 p-4 sm:gap-5 sm:p-5">
-            <Link href={`/products/${item.slug}`} className="shrink-0 overflow-hidden rounded-2xl border border-line">
+            <Link href={`/products/${item.slug}`} className="bg-lab shrink-0 overflow-hidden rounded-2xl border border-night/[0.06] p-1.5">
               <CartLineImage item={item} className="block h-16 w-16 sm:h-24 sm:w-24" />
             </Link>
             <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

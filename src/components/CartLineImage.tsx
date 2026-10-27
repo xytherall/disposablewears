@@ -6,7 +6,8 @@ export function CartLineImage({ item, className = "" }: { item: CartItem; classN
     <ProductImage
       product={{ name: item.productName, art: item.art, image_url: item.imageUrl }}
       variant={item.variantName}
-      className={className}
+      className={`float-item ${className}`}
+      bare
     />
   );
 }

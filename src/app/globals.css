@@ -2,17 +2,17 @@
 
 @theme {
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
-  --color-navy-950: #121a52;
-  --color-navy-900: #1e2a78;
-  --color-navy-800: #26359a;
-  --color-brand-700: #1d4ed8;
-  --color-brand-600: #2563eb;
-  --color-brand-500: #3b82f6;
-  --color-brand-100: #dbe7ff;
-  --color-brand-50: #eef4ff;
+  --color-navy-950: #070b1a;
+  --color-navy-900: #0b1026;
+  --color-navy-800: #1a2250;
+  --color-brand-700: #1f35e0;
+  --color-brand-600: #2a44ff;
+  --color-brand-500: #4f66ff;
+  --color-brand-100: #dfe4ff;
+  --color-brand-50: #eef1ff;
   --color-ink: #1f2937;
-  --color-muted: #5b6475;
-  --color-line: #e3e8f2;
+  --color-muted: #5a6072;
+  --color-line: #e4e8f2;
   --color-whatsapp: #1fa855;
 
   /* Clinical glass redesign */
@@ -33,15 +33,20 @@ body {
   color: var(--color-ink);
 }
 
+h1, h2 {
+  font-family: var(--font-display);
+  letter-spacing: -0.035em;
+}
+
 /* Shared form styles */
 @utility field {
-  @apply w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-[15px] text-ink outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-100;
+  @apply w-full rounded-2xl border border-line bg-white px-4 py-3 text-[15px] text-ink outline-none transition placeholder:text-slate-400 focus:border-brand-500 focus:ring-4 focus:ring-brand-100;
 }
 @utility label {
   @apply mb-1.5 block text-sm font-semibold text-ink;
 }
 @utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-[15px] font-semibold transition disabled:cursor-not-allowed disabled:opacity-60;
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-[15px] font-semibold transition disabled:cursor-not-allowed disabled:opacity-60;
 }
 @utility btn-primary {
   @apply btn bg-brand-600 text-white shadow-sm hover:bg-brand-700;

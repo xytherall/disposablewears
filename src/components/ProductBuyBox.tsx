@@ -44,17 +44,24 @@ export function ProductBuyBox({ product, whatsapp }: { product: Product; whatsap
 
   return (
     <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
-      <div className="overflow-hidden rounded-[2rem] border border-line bg-brand-50">
-        <ProductImage product={product} variant={variant?.name} className="aspect-square w-full" />
+      <div className="bg-lab relative overflow-hidden rounded-[2.5rem] border border-night/[0.06] lg:sticky lg:top-28 lg:self-start">
+        <div className="glass absolute inset-[14%] rounded-full" aria-hidden />
+        <div className="absolute inset-[26%] rounded-full bg-gradient-to-br from-volt/30 to-sky-300/30 blur-2xl" aria-hidden />
+        <div className="relative aspect-square p-[14%]">
+          <div className="animate-bob h-full w-full">
+            <ProductImage product={product} variant={variant?.name} bare className="float-item h-full w-full" />
+          </div>
+        </div>
+        <span className="tag absolute top-5 left-6 text-night/45">{product.unit}</span>
       </div>
 
       <div className="flex flex-col">
-        <p className="text-sm font-bold tracking-wider text-brand-600 uppercase">{categoryName(product.category)}</p>
-        <h1 className="mt-2 text-3xl leading-tight font-extrabold tracking-tight text-navy-900 sm:text-4xl">{product.name}</h1>
+        <p className="tag text-volt">{categoryName(product.category)}</p>
+        <h1 className="mt-3 text-4xl leading-[0.95] font-extrabold tracking-[-0.04em] text-night sm:text-6xl">{product.name}</h1>
         <p className="mt-3 text-lg text-muted">{product.short_description}</p>
 
         <div className="mt-6 flex items-baseline gap-3">
-          <span className="text-4xl font-extrabold text-navy-900">{variant ? formatPKR(variant.price) : "—"}</span>
+          <span className="font-display text-5xl font-extrabold tracking-tight text-night">{variant ? formatPKR(variant.price) : "—"}</span>
           <span className="text-muted">/ {product.unit}</span>
         </div>
 
