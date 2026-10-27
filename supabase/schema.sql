@@ -253,6 +253,56 @@ $$;
 revoke all on function public.place_order(jsonb, jsonb, jsonb) from public, anon, authenticated;
 
 -- ---------------------------------------------------------------------------
+-- Admin: change an order's status. Cancelling puts the items back in stock;
+-- un-cancelling takes them out again.
+-- ---------------------------------------------------------------------------
+
+create or replace function public.set_order_status(p_order_id uuid, p_status text)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_old text;
+  v_items jsonb;
+  v_item jsonb;
+  v_sign integer;
+begin
+  if not public.is_admin() then
+    raise exception 'Not allowed.';
+  end if;
+
+  select status, items into v_old, v_items from orders where id = p_order_id for update;
+  if not found then
+    raise exception 'Order not found.';
+  end if;
+
+  if v_old <> 'cancelled' and p_status = 'cancelled' then
+    v_sign := 1;
+  elsif v_old = 'cancelled' and p_status <> 'cancelled' then
+    v_sign := -1;
+  end if;
+
+  if v_sign is not null then
+    for v_item in select * from jsonb_array_elements(v_items) loop
+      update product_variants
+         set stock = stock + v_sign * (v_item ->> 'quantity')::integer
+       where id = (v_item ->> 'variant_id')::uuid;
+    end loop;
+  end if;
+
+  update orders set status = p_status where id = p_order_id;
+exception
+  when check_violation then
+    raise exception 'Not enough stock to restore this order.';
+end;
+$$;
+
+revoke all on function public.set_order_status(uuid, text) from public, anon;
+grant execute on function public.set_order_status(uuid, text) to authenticated;
+
+-- ---------------------------------------------------------------------------
 -- File storage: product photos (public) and payment screenshots (private)
 -- ---------------------------------------------------------------------------
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BulkQuoteForm } from "@/components/BulkQuoteForm";
+import { isServiceConfigured } from "@/lib/supabase/service";
 import { CheckIcon } from "@/components/Icons";
 import { PageHero } from "@/components/PageHero";
 import { getProducts, getSettings } from "@/lib/data";
@@ -52,6 +53,7 @@ export default async function BulkOrdersPage({ searchParams }: PageProps<"/bulk-
             whatsapp={settings.whatsapp}
             products={products.map((p) => ({ slug: p.slug, name: p.name, unit: p.unit }))}
             preselect={typeof product === "string" ? product : undefined}
+            saves={isServiceConfigured}
           />
         </div>
       </div>

@@ -1,14 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { saveQuote } from "@/app/(shop)/bulk-orders/actions";
 import { whatsappLink } from "@/lib/format";
-import { WhatsAppIcon } from "./Icons";
+import { CheckIcon, WhatsAppIcon } from "./Icons";
 
 type Option = { slug: string; name: string; unit: string };
 
 const BUSINESS_TYPES = ["Hospital", "Clinic", "Salon / Barber", "Spa / Beauty centre", "Restaurant / Food", "Distributor", "Other"];
 
-export function BulkQuoteForm({ whatsapp, products, preselect }: { whatsapp: string; products: Option[]; preselect?: string }) {
+export function BulkQuoteForm({
+  whatsapp,
+  products,
+  preselect,
+  saves,
+}: {
+  whatsapp: string;
+  products: Option[];
+  preselect?: string;
+  saves: boolean; // true when the store database is connected
+}) {
   const [qty, setQty] = useState<Record<string, string>>(() => (preselect ? { [preselect]: "" } : {}));
   const [form, setForm] = useState({ name: "", business: "", type: "", phone: "", city: "", message: "" });
   const update = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
@@ -22,8 +33,13 @@ export function BulkQuoteForm({ whatsapp, products, preselect }: { whatsapp: str
       return next;
     });
 
+  const [sent, setSent] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+
   function submit(e: React.FormEvent) {
     e.preventDefault();
+    setError(null);
     const lines = products
       .filter((p) => p.slug in qty)
       .map((p) => `• ${p.name}: ${qty[p.slug] || "?"} (${p.unit})`)
@@ -35,7 +51,37 @@ export function BulkQuoteForm({ whatsapp, products, preselect }: { whatsapp: str
       `Phone: ${form.phone}\nCity: ${form.city}\n\n` +
       `Products:\n${lines || "Not selected"}\n` +
       (form.message ? `\nNotes: ${form.message}` : "");
-    window.open(whatsappLink(whatsapp, text), "_blank", "noopener,noreferrer");
+
+    if (!saves) {
+      window.open(whatsappLink(whatsapp, text), "_blank", "noopener,noreferrer");
+      return;
+    }
+    if (!lines) {
+      setError("Please tick at least one product.");
+      return;
+    }
+    startTransition(async () => {
+      const res = await saveQuote({ ...form, products: lines });
+      if (res.ok) setSent(text);
+      else setError(res.error ?? "Something went wrong.");
+    });
+  }
+
+  if (sent) {
+    return (
+      <div className="py-6 text-center" role="status">
+        <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-emerald-100 text-emerald-700">
+          <CheckIcon className="h-7 w-7" />
+        </span>
+        <h2 className="mt-4 text-2xl font-bold text-navy-900">Request received</h2>
+        <p className="mx-auto mt-2 max-w-md text-muted">
+          Thank you, {form.name.split(" ")[0]}. We&apos;ll call or WhatsApp you on {form.phone} with prices soon.
+        </p>
+        <a href={whatsappLink(whatsapp, sent)} target="_blank" rel="noopener noreferrer" className="btn-whatsapp mt-6 px-6 py-3">
+          <WhatsAppIcon className="h-5 w-5" /> Need it fast? Send on WhatsApp too
+        </a>
+      </div>
+    );
   }
 
   return (
@@ -108,8 +154,14 @@ export function BulkQuoteForm({ whatsapp, products, preselect }: { whatsapp: str
         </div>
       </fieldset>
 
-      <button type="submit" className="btn-primary w-full py-3.5 sm:w-auto">
-        <WhatsAppIcon className="h-5 w-5" /> Send quote request
+      {error && (
+        <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+          {error}
+        </p>
+      )}
+      <button type="submit" disabled={pending} className="btn-primary w-full py-3.5 sm:w-auto">
+        {saves ? null : <WhatsAppIcon className="h-5 w-5" />}
+        {pending ? "Sending…" : "Send quote request"}
       </button>
     </form>
   );
