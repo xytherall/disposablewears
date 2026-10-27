@@ -28,8 +28,11 @@ export type StoreSettings = {
   phone: string;
   email: string;
   address: string;
-  delivery_fee: number;
-  free_delivery_min: number;
+  free_delivery_city: string;
+  delivery_fee: number; // other cities; 0 means "confirmed after the order"
+  free_delivery_min: number; // 0 turns it off
+  facebook_url: string;
+  instagram_url: string;
   bank_name: string;
   bank_account_title: string;
   bank_account_no: string;
@@ -66,7 +69,7 @@ export type Order = {
   notes: string | null;
   items: OrderLine[];
   subtotal: number;
-  delivery_fee: number;
+  delivery_fee: number | null; // null until the owner confirms it
   total: number;
   payment_method: PaymentMethod;
   payment_reference: string | null;

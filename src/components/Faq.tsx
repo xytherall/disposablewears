@@ -43,8 +43,12 @@ export const FAQ_GROUPS: { title: string; items: FaqItem[] }[] = [
         a: "Yes, we deliver to every city in Pakistan. We don't ship outside Pakistan at the moment.",
       },
       {
+        q: "How much is delivery?",
+        a: "Delivery is free in Lahore. For other cities the charge depends on your city and order size, and we confirm it with you before we dispatch.",
+      },
+      {
         q: "How long does delivery take?",
-        a: "It depends on your city. We'll confirm the expected delivery time when we confirm your order.",
+        a: "We dispatch orders quickly. Delivery time depends on your city, and we'll tell you when to expect it when we confirm your order.",
       },
       {
         q: "What if my order arrives damaged or wrong?",

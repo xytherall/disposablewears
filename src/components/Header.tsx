@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { CloseIcon, MenuIcon } from "./Icons";
+import { useCart } from "./CartProvider";
+import { CartIcon, CloseIcon, MenuIcon } from "./Icons";
 import { Logo } from "./Logo";
 
 const NAV = [
@@ -15,6 +16,7 @@ const NAV = [
 ];
 
 export function Header({ announcement }: { announcement: string }) {
+  const { count, ready } = useCart();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -48,6 +50,18 @@ export function Header({ announcement }: { announcement: string }) {
         <div className="flex items-center gap-2">
           <Link href="/bulk-orders" className="btn-dark hidden px-4 py-2.5 text-sm lg:inline-flex">
             Get a bulk quote
+          </Link>
+          <Link
+            href="/cart"
+            className="relative rounded-xl p-2.5 text-navy-900 transition hover:bg-brand-50"
+            aria-label={`Cart, ${count} items`}
+          >
+            <CartIcon />
+            {ready && count > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-600 px-1 text-[11px] font-bold text-white">
+                {count > 99 ? "99+" : count}
+              </span>
+            )}
           </Link>
           <button
             type="button"

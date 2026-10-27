@@ -5,8 +5,10 @@ import { useState } from "react";
 import { categoryName } from "@/lib/catalog";
 import { formatPKR, whatsappLink } from "@/lib/format";
 import type { Product } from "@/lib/types";
-import { WhatsAppIcon } from "./Icons";
+import { useCart } from "./CartProvider";
+import { CartIcon, CheckIcon, WhatsAppIcon } from "./Icons";
 import { ProductImage } from "./ProductArt";
+import { QuantityStepper } from "./QuantityStepper";
 import { swatchFor } from "./Swatches";
 
 export function ProductBuyBox({ product, whatsapp }: { product: Product; whatsapp: string }) {
@@ -15,6 +17,24 @@ export function ProductBuyBox({ product, whatsapp }: { product: Product; whatsap
   const [qty, setQty] = useState(1);
   const variant = product.variants.find((v) => v.id === variantId) ?? product.variants[0];
   const soldOut = !variant || variant.stock <= 0;
+  const { add } = useCart();
+  const [added, setAdded] = useState<string | null>(null);
+
+  function addToCart() {
+    if (!variant || soldOut) return;
+    add({
+      variantId: variant.id,
+      slug: product.slug,
+      productName: product.name,
+      variantName: variant.name,
+      unit: product.unit,
+      price: variant.price,
+      quantity: qty,
+      art: product.art,
+      imageUrl: product.image_url,
+    });
+    setAdded(`${qty} × ${product.name}${product.variants.length > 1 ? ` (${variant.name})` : ""}`);
+  }
 
   const message =
     `Hi Disposable Wears, I'd like to order:\n` +
@@ -74,22 +94,7 @@ export function ProductBuyBox({ product, whatsapp }: { product: Product; whatsap
         <div className="mt-8">
           <p className="text-sm font-semibold text-ink">Quantity</p>
           <div className="mt-3 flex items-center gap-4">
-            <div className="flex items-center rounded-xl border border-line">
-              <button type="button" className="h-12 w-12 text-xl text-navy-900 hover:bg-brand-50" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Decrease quantity">
-                −
-              </button>
-              <input
-                type="number"
-                min={1}
-                value={qty}
-                onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}
-                className="h-12 w-16 border-x border-line text-center font-semibold outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
-                aria-label="Quantity"
-              />
-              <button type="button" className="h-12 w-12 text-xl text-navy-900 hover:bg-brand-50" onClick={() => setQty((q) => q + 1)} aria-label="Increase quantity">
-                +
-              </button>
-            </div>
+            <QuantityStepper value={qty} onChange={setQty} />
             {variant && (
               <p className="text-muted">
                 Total <span className="text-lg font-bold text-navy-900">{formatPKR(variant.price * qty)}</span>
@@ -98,21 +103,36 @@ export function ProductBuyBox({ product, whatsapp }: { product: Product; whatsap
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <a
-            href={whatsappLink(whatsapp, message)}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-disabled={soldOut}
-            className={`btn-whatsapp flex-1 py-3.5 ${soldOut ? "pointer-events-none opacity-60" : ""}`}
-          >
-            <WhatsAppIcon className="h-5 w-5" /> {soldOut ? "Out of stock" : "Order on WhatsApp"}
-          </a>
-          <Link href={`/bulk-orders?product=${product.slug}`} className="btn-outline flex-1 py-3.5">
-            Need bulk? Get a quote
-          </Link>
+        <div className="mt-8 flex flex-col gap-3">
+          <button type="button" onClick={addToCart} disabled={soldOut} className="btn-primary w-full py-4 text-base">
+            <CartIcon className="h-5 w-5" /> {soldOut ? "Out of stock" : "Add to cart"}
+          </button>
+          {added && (
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm" role="status">
+              <span className="flex items-center gap-2 font-medium text-emerald-800">
+                <CheckIcon className="h-4 w-4" /> Added {added}
+              </span>
+              <Link href="/cart" className="font-bold text-brand-700 hover:underline">
+                View cart & checkout →
+              </Link>
+            </div>
+          )}
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <a
+              href={whatsappLink(whatsapp, message)}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-disabled={soldOut}
+              className={`btn-whatsapp flex-1 ${soldOut ? "pointer-events-none opacity-60" : ""}`}
+            >
+              <WhatsAppIcon className="h-5 w-5" /> Order on WhatsApp
+            </a>
+            <Link href={`/bulk-orders?product=${product.slug}`} className="btn-outline flex-1">
+              Need bulk? Get a quote
+            </Link>
+          </div>
         </div>
-        <p className="mt-4 text-sm text-muted">Cash on Delivery available · Delivery all over Pakistan</p>
+        <p className="mt-4 text-sm text-muted">Free delivery in Lahore · Cash on Delivery · Delivery all over Pakistan</p>
       </div>
     </div>
   );

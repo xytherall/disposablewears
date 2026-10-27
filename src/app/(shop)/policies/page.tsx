@@ -16,9 +16,15 @@ export default async function PoliciesPage() {
       title: "Delivery",
       body: [
         "We deliver to all cities in Pakistan. We do not ship outside Pakistan.",
-        `The delivery charge is ${formatPKR(s.delivery_fee)} per order${
-          s.free_delivery_min > 0 ? `, and delivery is free on orders of ${formatPKR(s.free_delivery_min)} or more` : ""
-        }. Bulk orders may have separate delivery terms, which we confirm with your quote.`,
+        [
+          s.free_delivery_city ? `Delivery is free in ${s.free_delivery_city}.` : "",
+          s.delivery_fee > 0
+            ? `For other cities the delivery charge is ${formatPKR(s.delivery_fee)} per order.`
+            : "For other cities, the delivery charge depends on your city and order size. We confirm it with you before dispatch.",
+          s.free_delivery_min > 0 ? `Delivery is free on orders of ${formatPKR(s.free_delivery_min)} or more.` : "",
+        ]
+          .filter(Boolean)
+          .join(" "),
         "Delivery time depends on your city. We confirm the expected time when we confirm your order by phone or WhatsApp.",
       ],
     },

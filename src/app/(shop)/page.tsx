@@ -95,7 +95,7 @@ export default async function HomePage() {
               </Link>
             </div>
             <ul className="animate-fade-up delay-3 mt-10 grid max-w-lg grid-cols-1 gap-3 text-sm text-blue-100 sm:grid-cols-3">
-              {["Cash on Delivery", "Nationwide delivery", "Retail & bulk"].map((t) => (
+              {["Free delivery in Lahore", "Cash on Delivery", "Retail & bulk"].map((t) => (
                 <li key={t} className="flex items-center gap-2">
                   <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-500/30 text-blue-200">
                     <CheckIcon className="h-3.5 w-3.5" />

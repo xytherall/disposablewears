@@ -45,8 +45,8 @@ create table if not exists public.orders (
   notes text,
   items jsonb not null,
   subtotal integer not null,
-  delivery_fee integer not null default 0,
-  total integer not null,
+  delivery_fee integer,            -- null = delivery charge still to be confirmed
+  total integer not null,          -- subtotal + delivery_fee (when known)
   payment_method text not null check (payment_method in ('cod', 'bank', 'jazzcash', 'easypaisa')),
   payment_reference text,
   payment_proof_path text,
@@ -76,8 +76,9 @@ create table if not exists public.store_settings (
   phone text not null default '+92 300 1455 129',
   email text not null default 'disposablewears.pk@gmail.com',
   address text not null default 'Ghazi Road, DHA, Lahore Cantt.',
-  delivery_fee integer not null default 250,
-  free_delivery_min integer not null default 5000,
+  free_delivery_city text not null default 'Lahore',
+  delivery_fee integer not null default 0,        -- other cities; 0 = confirm per order
+  free_delivery_min integer not null default 0,   -- free delivery above this amount; 0 = off
   bank_name text not null default '',
   bank_account_title text not null default '',
   bank_account_no text not null default '',
@@ -86,7 +87,9 @@ create table if not exists public.store_settings (
   jazzcash_name text not null default '',
   easypaisa_no text not null default '',
   easypaisa_name text not null default '',
-  announcement text not null default 'Delivery all over Pakistan · Cash on Delivery available'
+  facebook_url text not null default '',
+  instagram_url text not null default '',
+  announcement text not null default 'Free delivery in Lahore · Delivery all over Pakistan · Cash on Delivery'
 );
 insert into public.store_settings (id) values (1) on conflict (id) do nothing;
 
@@ -173,6 +176,7 @@ declare
   v_subtotal integer := 0;
   v_fee integer;
   v_free_min integer;
+  v_free_city text;
   v_id uuid;
   v_no bigint;
 begin
@@ -216,9 +220,16 @@ begin
     );
   end loop;
 
-  select delivery_fee, free_delivery_min into v_fee, v_free_min from store_settings where id = 1;
-  if v_free_min > 0 and v_subtotal >= v_free_min then
+  -- Same rules as deliveryFeeFor() in src/lib/format.ts.
+  select delivery_fee, free_delivery_min, free_delivery_city
+    into v_fee, v_free_min, v_free_city
+    from store_settings where id = 1;
+  if v_free_city <> '' and lower(trim(p_customer ->> 'city')) = lower(trim(v_free_city)) then
     v_fee := 0;
+  elsif v_free_min > 0 and v_subtotal >= v_free_min then
+    v_fee := 0;
+  elsif coalesce(v_fee, 0) <= 0 then
+    v_fee := null;  -- confirmed by the owner after the order
   end if;
 
   insert into orders (
@@ -229,7 +240,7 @@ begin
     p_customer ->> 'name', p_customer ->> 'phone', nullif(p_customer ->> 'email', ''),
     nullif(p_customer ->> 'business_name', ''), p_customer ->> 'city', p_customer ->> 'address',
     nullif(p_customer ->> 'notes', ''),
-    v_lines, v_subtotal, coalesce(v_fee, 0), v_subtotal + coalesce(v_fee, 0),
+    v_lines, v_subtotal, v_fee, v_subtotal + coalesce(v_fee, 0),
     p_payment ->> 'method', nullif(p_payment ->> 'reference', ''), nullif(p_payment ->> 'proof_path', ''),
     case when p_payment ->> 'method' = 'cod' then 'unpaid' else 'pending_verification' end
   )

@@ -17,8 +17,11 @@ export const DEFAULT_SETTINGS: StoreSettings = {
   phone: "+92 300 1455 129",
   email: "disposablewears.pk@gmail.com",
   address: "Ghazi Road, DHA, Lahore Cantt.",
-  delivery_fee: 250,
-  free_delivery_min: 5000,
+  free_delivery_city: "Lahore",
+  delivery_fee: 0,
+  free_delivery_min: 0,
+  facebook_url: "",
+  instagram_url: "",
   bank_name: "",
   bank_account_title: "",
   bank_account_no: "",
@@ -27,7 +30,7 @@ export const DEFAULT_SETTINGS: StoreSettings = {
   jazzcash_name: "",
   easypaisa_no: "",
   easypaisa_name: "",
-  announcement: "Delivery all over Pakistan · Cash on Delivery available",
+  announcement: "Free delivery in Lahore · Delivery all over Pakistan · Cash on Delivery",
 };
 
 type Seed = Omit<Product, "id" | "variants" | "active" | "image_url" | "sort"> & {

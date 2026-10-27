@@ -65,7 +65,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
             )}
           </div>
           <div className="space-y-4 rounded-3xl bg-navy-950 p-7 text-white sm:p-8">
-            <Perk icon={<TruckIcon />} title="Delivery across Pakistan" text="We ship to every city. Delivery time is confirmed with your order." />
+            <Perk icon={<TruckIcon />} title="Free delivery in Lahore" text="And we ship to every other city in Pakistan." />
             <Perk icon={<CashIcon />} title="Cash on Delivery" text="Or pay by bank transfer, JazzCash or Easypaisa." />
             <Perk icon={<ShieldIcon />} title="Single use, always fresh" text="A new piece for every patient or client." />
           </div>

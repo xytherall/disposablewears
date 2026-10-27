@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CATEGORIES } from "@/lib/catalog";
 import { whatsappLink } from "@/lib/format";
 import type { StoreSettings } from "@/lib/types";
-import { MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from "./Icons";
+import { FacebookIcon, InstagramIcon, MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from "./Icons";
 import { Logo } from "./Logo";
 
 export function Footer({ settings }: { settings: StoreSettings }) {
@@ -14,6 +14,20 @@ export function Footer({ settings }: { settings: StoreSettings }) {
           <p className="mt-4 text-sm leading-relaxed text-blue-200/80">
             Disposable hygiene products for hospitals, clinics, salons and spas. Because your safety matters.
           </p>
+          {(settings.facebook_url || settings.instagram_url) && (
+            <div className="mt-5 flex gap-3">
+              {settings.facebook_url && (
+                <a href={settings.facebook_url} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-brand-600">
+                  <FacebookIcon />
+                </a>
+              )}
+              {settings.instagram_url && (
+                <a href={settings.instagram_url} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-brand-600">
+                  <InstagramIcon />
+                </a>
+              )}
+            </div>
+          )}
         </div>
 
         <div>

@@ -7,7 +7,7 @@ Built with [Next.js](https://nextjs.org) and Tailwind CSS. The database, admin l
 ## Build phases
 
 1. **Design and main pages** (done): home, products, product pages, About, Contact, FAQs, bulk quote form, policies, WhatsApp button.
-2. Cart and checkout: Cash on Delivery, bank transfer, JazzCash, Easypaisa.
+2. **Cart and checkout** (done): Cash on Delivery, bank transfer, JazzCash, Easypaisa. Free delivery in Lahore; other cities confirmed per order. Until Supabase is connected, orders are sent to the owner on WhatsApp.
 3. Admin portal and database: manage products, prices, stock, orders and quote requests.
 4. Real product photos, going live, and connecting the domain.
 
