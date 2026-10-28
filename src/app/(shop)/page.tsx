@@ -1,19 +1,19 @@
 import Link from "next/link";
 import { FaqList, HOME_FAQS } from "@/components/Faq";
 import { ArrowRightIcon, WhatsAppIcon } from "@/components/Icons";
-import { ProductArt } from "@/components/ProductArt";
+import { ProductShot } from "@/components/ProductArt";
 import { ProductCard } from "@/components/ProductCard";
 import { Layer, Parallax } from "@/components/home/Parallax";
 import { CATEGORIES } from "@/lib/catalog";
 import { getProducts, getSettings } from "@/lib/data";
 import { whatsappLink } from "@/lib/format";
 
-const CATEGORY_ART: Record<string, { art: string; variant: string }> = {
-  "bed-couch": { art: "bedsheet", variant: "Blue" },
-  gowns: { art: "gown", variant: "Blue" },
-  "head-foot": { art: "cap", variant: "Blue" },
-  "masks-gloves": { art: "mask", variant: "Black" },
-  aprons: { art: "apron", variant: "White" },
+const CATEGORY_ART: Record<string, { slug: string; art: string; variant: string }> = {
+  "bed-couch": { slug: "disposable-bed-sheet", art: "bedsheet", variant: "Blue" },
+  gowns: { slug: "ot-gown-with-trouser", art: "gown", variant: "Blue" },
+  "head-foot": { slug: "bouffant-cap", art: "cap", variant: "Blue" },
+  "masks-gloves": { slug: "face-mask", art: "mask", variant: "Black" },
+  aprons: { slug: "chef-apron", art: "apron", variant: "Blue" },
 };
 
 const TICKER = ["Free delivery in Lahore", "Cash on delivery", "Retail & bulk", "Delivered all over Pakistan", "Single use, always fresh"];
@@ -55,7 +55,7 @@ export default async function HomePage() {
                 <br />
                 every
                 <span className="glass mx-2 inline-flex h-[0.8em] w-[1.5em] translate-y-[0.08em] items-center justify-center rounded-full align-baseline">
-                  <ProductArt art="mask" variant="Blue" label="" bare className="float-item h-[0.9em] w-[0.9em]" />
+                  <ProductShot slug="face-mask" art="mask" variant="Blue" className="float-item h-[0.9em] w-[0.9em]" />
                 </span>
                 <br />
                 <span className="relative inline-block h-[0.95em] overflow-hidden align-bottom text-volt">
@@ -99,17 +99,17 @@ export default async function HomePage() {
 
               <Layer depth={1.4} className="absolute top-[6%] left-[22%] w-[56%]">
                 <div className="animate-bob">
-                  <ProductArt art="gown" variant="Blue" label="Isolation gown" bare className="float-item w-full" />
+                  <ProductShot slug="isolation-gown" art="gown" variant="Blue" label="Isolation gown" className="float-item w-full" />
                 </div>
               </Layer>
               <Layer depth={2.2} className="absolute bottom-[8%] left-[0%] w-[38%]">
                 <div className="animate-bob [--r:-8deg] [animation-delay:-2s]">
-                  <ProductArt art="cap" variant="Blue" label="Bouffant cap" bare className="float-item w-full" />
+                  <ProductShot slug="bouffant-cap" art="cap" variant="Blue" label="Bouffant cap" className="float-item w-full" />
                 </div>
               </Layer>
               <Layer depth={2.8} className="absolute right-[0%] bottom-[14%] w-[36%]">
                 <div className="animate-bob [--r:10deg] [animation-delay:-4s]">
-                  <ProductArt art="gloves" variant="Transparent" label="Gloves" bare className="float-item w-full" />
+                  <ProductShot slug="disposable-gloves" art="gloves" variant="Transparent" label="Gloves" className="float-item w-full" />
                 </div>
               </Layer>
 
@@ -167,11 +167,10 @@ export default async function HomePage() {
                     {count} {count === 1 ? "item" : "items"}
                   </span>
                   <span className="relative h-14 w-14 sm:h-20 sm:w-20">
-                    <ProductArt
+                    <ProductShot
+                      slug={a.slug}
                       art={a.art}
                       variant={a.variant}
-                      label=""
-                      bare
                       className="float-item absolute inset-0 h-full w-full transition duration-500 group-hover:scale-[1.6] group-hover:-rotate-12"
                     />
                   </span>
@@ -268,12 +267,12 @@ export default async function HomePage() {
             <div className="relative hidden aspect-square lg:block" aria-hidden>
               <Layer depth={1.6} className="absolute inset-[8%]">
                 <div className="animate-bob">
-                  <ProductArt art="bedsheet" variant="White" label="" bare className="float-item w-full" />
+                  <ProductShot slug="disposable-bed-sheet" art="bedsheet" variant="Blue" className="float-item w-full" />
                 </div>
               </Layer>
               <Layer depth={3} className="absolute top-[4%] right-[4%] w-[40%]">
                 <div className="animate-bob [--r:12deg] [animation-delay:-3s]">
-                  <ProductArt art="shoe" variant="Blue" label="" bare className="float-item w-full" />
+                  <ProductShot slug="shoe-cover" art="shoe" variant="Blue" className="float-item w-full" />
                 </div>
               </Layer>
             </div>

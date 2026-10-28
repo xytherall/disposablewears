@@ -1,3 +1,5 @@
+import { bundledPhoto } from "@/lib/photos";
+
 // Simple drawings used in place of product photos until the owner uploads
 // real ones from the admin panel. The drawing takes the colour of the
 // selected variant (Blue, Black, White, Transparent).
@@ -180,7 +182,7 @@ export function ProductImage({
   className = "",
   bare = false,
 }: {
-  product: { name: string; art: string | null; image_url: string | null };
+  product: { name: string; slug?: string; art: string | null; image_url: string | null };
   variant?: string;
   className?: string;
   bare?: boolean;
@@ -189,5 +191,33 @@ export function ProductImage({
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={product.image_url} alt={product.name} className={`${bare ? "object-contain" : "object-cover"} ${className}`} />;
   }
+  const photo = bundledPhoto(product.slug, variant);
+  if (photo) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={photo} alt={`${product.name}${variant ? ` (${variant})` : ""}`} className={`object-contain ${className}`} />;
+  }
   return <ProductArt art={product.art} variant={variant} label={product.name} className={className} bare={bare} />;
+}
+
+// A floating product shot for decorative spots: the bundled photo when there
+// is one, otherwise the drawing.
+export function ProductShot({
+  slug,
+  art,
+  variant,
+  label = "",
+  className = "",
+}: {
+  slug: string;
+  art: string;
+  variant: string;
+  label?: string;
+  className?: string;
+}) {
+  const photo = bundledPhoto(slug, variant);
+  if (photo) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={photo} alt={label} className={`object-contain ${className}`} />;
+  }
+  return <ProductArt art={art} variant={variant} label={label} bare className={className} />;
 }

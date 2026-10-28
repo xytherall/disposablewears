@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRightIcon, BoxIcon, FeatherIcon, ShieldIcon, SparkleIcon, TruckIcon, CashIcon } from "@/components/Icons";
 import { PageHero } from "@/components/PageHero";
-import { ProductArt } from "@/components/ProductArt";
+import { ProductShot } from "@/components/ProductArt";
 import { SectionHeading } from "@/components/SectionHeading";
 
 export const metadata: Metadata = {
@@ -45,12 +45,12 @@ export default function AboutPage() {
         </div>
         <div className="grid grid-cols-3 gap-4" aria-hidden>
           {[
-            ["bedsheet", "Blue"], ["gown", "White"], ["cap", "Blue"],
-            ["mask", "Black"], ["spa", "Black"], ["shoe", "Blue"],
-            ["apron", "White"], ["gloves", "Transparent"], ["scrubs", "Blue"],
-          ].map(([art, v]) => (
-            <div key={art} className="bg-lab rounded-3xl border border-night/[0.06] p-3 transition hover:-translate-y-1">
-              <ProductArt art={art} variant={v} label="" bare className="float-item block aspect-square w-full" />
+            ["disposable-bed-sheet", "bedsheet", "Blue"], ["isolation-gown", "gown", "White"], ["bouffant-cap", "cap", "Blue"],
+            ["face-mask", "mask", "Black"], ["ot-gown-with-trouser", "scrubs", "Blue"], ["shoe-cover", "shoe", "Blue"],
+            ["chef-apron", "apron", "White"], ["disposable-gloves", "gloves", "Transparent"], ["face-mask", "mask", "Blue"],
+          ].map(([slug, art, v]) => (
+            <div key={slug + v} className="bg-lab rounded-3xl border border-night/[0.06] p-3 transition hover:-translate-y-1">
+              <ProductShot slug={slug} art={art} variant={v} className="float-item block aspect-square w-full" />
             </div>
           ))}
         </div>
