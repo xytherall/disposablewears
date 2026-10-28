@@ -204,7 +204,7 @@ export default async function HomePage() {
         <div className="pointer-events-none absolute -right-20 -bottom-40 h-[480px] w-[480px] rounded-full bg-night/50 blur-[120px]" aria-hidden />
         <div className="container-page relative">
           <h2 className="reveal font-display max-w-3xl text-5xl leading-[0.95] font-extrabold tracking-[-0.04em] sm:text-7xl">
-            Made for places that care about clean.
+            Made for places that care about cleanliness.
           </h2>
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {AUDIENCES.map((a, i) => (
