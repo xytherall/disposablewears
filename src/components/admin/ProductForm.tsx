@@ -168,7 +168,7 @@ export function ProductForm({ product, justCreated }: { product: Product | null;
             </label>
             <label className="flex items-center gap-3">
               <input type="checkbox" name="featured" defaultChecked={product?.featured ?? false} className="h-5 w-5 accent-brand-600" />
-              <span><span className="font-semibold">Best seller</span><span className="block text-sm text-muted">Shows on the home page.</span></span>
+              <span><span className="font-semibold">Show on home page</span><span className="block text-sm text-muted">Appears under "Our products" on the home page.</span></span>
             </label>
             <div>
               <label className="label" htmlFor="sort">Order in list <span className="font-normal text-muted">(lower shows first)</span></label>

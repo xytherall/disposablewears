@@ -54,9 +54,6 @@ export default async function HomePage() {
                 Fresh for
                 <br />
                 every
-                <span className="glass mx-2 inline-flex h-[0.8em] w-[1.5em] translate-y-[0.08em] items-center justify-center rounded-full align-baseline">
-                  <ProductShot slug="face-mask" art="mask" variant="Blue" className="float-item h-[0.9em] w-[0.9em]" />
-                </span>
                 <br />
                 <span className="relative inline-block h-[0.95em] overflow-hidden align-bottom text-volt">
                   <span className="animate-words block">
@@ -181,13 +178,13 @@ export default async function HomePage() {
         </ul>
       </section>
 
-      {/* Best sellers */}
+      {/* Featured products */}
       <section className="container-page pt-24 sm:pt-32">
         <div className="reveal flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <p className="tag text-volt">Best sellers</p>
+            <p className="tag text-volt">Shop the range</p>
             <h2 className="font-display mt-3 text-5xl leading-[0.95] font-extrabold tracking-[-0.04em] text-night sm:text-7xl">
-              Most ordered<span className="text-volt">.</span>
+              Our products<span className="text-volt">.</span>
             </h2>
           </div>
           <Link href="/products" className="btn-ghost self-start sm:self-auto">
@@ -268,11 +265,6 @@ export default async function HomePage() {
               <Layer depth={1.6} className="absolute inset-[8%]">
                 <div className="animate-bob">
                   <ProductShot slug="disposable-bed-sheet" art="bedsheet" variant="Blue" className="float-item w-full" />
-                </div>
-              </Layer>
-              <Layer depth={3} className="absolute top-[4%] right-[4%] w-[40%]">
-                <div className="animate-bob [--r:12deg] [animation-delay:-3s]">
-                  <ProductShot slug="shoe-cover" art="shoe" variant="Blue" className="float-item w-full" />
                 </div>
               </Layer>
             </div>
