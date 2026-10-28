@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { SEED_PRODUCTS } from "@/lib/catalog";
 import { getSettings } from "@/lib/data";
 import { deliveryFeeFor, paymentAccountReady } from "@/lib/format";
+import { sendOrderAlert } from "@/lib/notify";
 import { createServiceClient, isServiceConfigured } from "@/lib/supabase/service";
 import type { PaymentMethod } from "@/lib/types";
 
@@ -138,10 +139,26 @@ export async function placeOrder(form: FormData): Promise<PlaceOrderResult> {
     .eq("id", order_id)
     .single();
 
+  const lines = (order!.items as PlacedLine[]).map(({ product, variant, unit, price, quantity }) => ({ product, variant, unit, price, quantity }));
+
+  await sendOrderAlert({
+    orderId: order_id,
+    orderNo: order!.order_no,
+    to: settings.email,
+    customer,
+    lines,
+    subtotal: order!.subtotal,
+    delivery: order!.delivery_fee,
+    total: order!.total,
+    paymentMethod: method,
+    reference,
+    hasProof,
+  });
+
   return {
     ok: true,
     orderNo: order!.order_no,
-    lines: (order!.items as PlacedLine[]).map(({ product, variant, unit, price, quantity }) => ({ product, variant, unit, price, quantity })),
+    lines,
     subtotal: order!.subtotal,
     delivery: order!.delivery_fee,
     total: order!.total,
