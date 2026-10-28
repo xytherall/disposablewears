@@ -1,31 +1,20 @@
-// Recreation of the Disposable Wears logo from the flyer: a scrub top above
-// "DW". Swap for the official file when the owner sends it.
+// The Disposable Wears logo, redrawn from the printed flyer: a scrub top
+// above an interlocked "DW".
 export function LogoMark({ className = "h-10 w-10" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 64 64" className={className} role="img" aria-label="Disposable Wears logo">
-      <defs>
-        <linearGradient id="dw-shirt" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#3b82f6" />
-          <stop offset="1" stopColor="#1d4ed8" />
-        </linearGradient>
-      </defs>
+    <svg viewBox="0 0 64 62" className={className} role="img" aria-label="Disposable Wears logo">
       <path
-        d="M21 3 L11 7.5 L4 17 L11.5 22 L15 17 L15 34 L49 34 L49 17 L52.5 22 L60 17 L53 7.5 L43 3 Q38.5 10 32 10.5 Q25.5 10 21 3 Z"
-        fill="url(#dw-shirt)"
+        d="M25 3 L16.5 5.5 L6 13.5 L11.5 21.5 L18.5 17.5 L18.5 34 L45.5 34 L45.5 17.5 L52.5 21.5 L58 13.5 L47.5 5.5 L39 3 Z"
+        fill="#1f7ae6"
       />
-      <path d="M25 4.5 L32 14 L39 4.5" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinejoin="round" />
-      <text
-        x="32"
-        y="60"
-        textAnchor="middle"
-        fontFamily="var(--font-sans), Arial, sans-serif"
-        fontWeight="800"
-        fontSize="25"
-        letterSpacing="-1.5"
-        fill="#1e2a78"
-      >
-        DW
-      </text>
+      <path d="M25 3 L32 12 L39 3 Z" fill="#1559c7" />
+      <path d="M25 3 L32 12 L39 3" fill="none" stroke="#fff" strokeWidth="1.6" strokeLinejoin="round" />
+      <path
+        d="M3 35 H15 A12.5 12.5 0 0 1 15 60 H3 Z M10 41.5 V53.5 H15 A6 6 0 0 0 15 41.5 Z"
+        fill="#232a6e"
+        fillRule="evenodd"
+      />
+      <path d="M25 35 H32 L36.6 49.5 L41 37 H46 L50.4 49.5 L55 35 H62 L54 60 H47.4 L43.5 47.8 L39.6 60 H33 Z" fill="#232a6e" />
     </svg>
   );
 }
@@ -36,7 +25,7 @@ export function Logo({ light = false }: { light?: boolean }) {
       <span className={light ? "rounded-xl bg-white p-1" : ""}>
         <LogoMark className="h-9 w-9" />
       </span>
-      <span className={`font-display leading-[0.95] font-extrabold tracking-[-0.03em] ${light ? "text-white" : "text-night"}`}>
+      <span className={`leading-[0.95] font-extrabold tracking-[-0.02em] ${light ? "text-white" : "text-[#232a6e]"}`}>
         <span className="block text-[16px]">Disposable</span>
         <span className="block text-[16px]">Wears</span>
       </span>
